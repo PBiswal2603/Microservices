@@ -18,10 +18,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	
 	private UsersService usersService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private Environment environment;
 	
 	@Autowired
-	public WebSecurity(UsersService usersService, BCryptPasswordEncoder bCryptPasswordEncoder)
+	public WebSecurity(Environment environment,UsersService usersService, BCryptPasswordEncoder bCryptPasswordEncoder)
 	{
+		this.environment = environment;
 		this.usersService = usersService;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
@@ -37,9 +39,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	private AuthenticationFilter getAuthenticationFilter() throws Exception
 	{
-		AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-		authenticationFilter.setAuthenticationManager(authenticationManager()); 
-		//authenticationFilter.setFilterProcessesUrl(environment.getProperty("login.url.path"));
+		AuthenticationFilter authenticationFilter = new AuthenticationFilter(usersService, environment, authenticationManager());
+		//authenticationFilter.setAuthenticationManager(authenticationManager()); 
+		authenticationFilter.setFilterProcessesUrl(environment.getProperty("login.url.path"));
 		return authenticationFilter;
 	}
 	  @Override

@@ -32,7 +32,10 @@ public class UserController {
 		return "Users Web Service (PhotoAppApiUsers)working on port ::"+env.getProperty("local.server.port");
 	}
 	
-	@PostMapping
+	@PostMapping(
+			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
+			)
 	public ResponseEntity<CreateUserResponseModel> createUser(@RequestBody CreateUserRequestModel userDetails)
 	{
 		ModelMapper modelMapper = new ModelMapper(); 
